@@ -52,7 +52,7 @@
     index = (index + 1) % archetypes.length;
   }
 
-  fetch("quotes.json")
+  fetch("./quotes.json")
     .then(response => response.json())
     .then(data => {
       archetypes = data;
