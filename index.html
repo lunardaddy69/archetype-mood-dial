@@ -35,36 +35,34 @@
   <div class="quote" id="quote"></div>
 
   <script>
-    const archetypes = [
-      {
-        name: "Lover",
-        quote: "Feel everything. That is your superpower."
-      },
-      {
-        name: "Warrior",
-        quote: "Discipline is freedom. Move toward the fire."
-      },
-      {
-        name: "Magician",
-        quote: "See the pattern. Pull the thread."
-      },
-      {
-        name: "King",
-        quote: "Order your domain. Own your impact."
-      }
-    ];
+  let index = 0;
+  let archetypes = [];
 
-    let index = 0;
+  function updateDisplay() {
+    if (archetypes.length === 0) return;
 
-    function updateDisplay() {
-      const { name, quote } = archetypes[index];
-      document.getElementById("archetype").textContent = name;
-      document.getElementById("quote").textContent = quote;
-      index = (index + 1) % archetypes.length;
-    }
+    const archetype = archetypes[index];
+    const randomQuote = archetype.quotes[Math.floor(Math.random() * archetype.quotes.length)];
 
-    updateDisplay();
-    setInterval(updateDisplay, 15 * 60 * 1000); // Rotate every 15 minutes
-  </script>
+    document.getElementById("archetype").textContent = archetype.name;
+    document.getElementById("quote").textContent = randomQuote.author
+      ? `${randomQuote.text}\n– ${randomQuote.author}`
+      : randomQuote.text;
+
+    index = (index + 1) % archetypes.length;
+  }
+
+  fetch("quotes.json")
+    .then(response => response.json())
+    .then(data => {
+      archetypes = data;
+      updateDisplay();
+      setInterval(updateDisplay, 15 * 60 * 1000);
+    })
+    .catch(err => {
+      document.getElementById("quote").textContent = "Failed to load quotes.";
+      console.error("Quote loading error:", err);
+    });
+</script>
 </body>
 </html>
