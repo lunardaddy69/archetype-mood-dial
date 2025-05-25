@@ -1,5 +1,7 @@
-{
-  "archetype": "King",
-  "quote": "A true King does not rule through fear, but through grounded presence.",
-  "author": "Moore & Gillette"
+import quotes from '../../quotes.json';  // quotes.json is in root
+
+export default function handler(req, res) {
+  const pick = quotes[Math.floor(Math.random() * quotes.length)];
+  res.setHeader('Cache-Control', 'no-store');
+  res.status(200).json(pick);
 }
